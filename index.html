@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Card Download</title>
+    <style>
+      body {
+        background-color: rgba(0, 0, 0, 0.515);
+      }
+
+      #cardsContainer {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        justify-items: center;
+      }
+
+      .card {
+        position: relative;
+        width: 453px;
+        height: 800px;
+        margin-bottom: 20px;
+      }
+      .card:hover {
+        cursor: pointer;
+      }
+
+      .logo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .card-content {
+        position: absolute;
+        z-index: 1011;
+        bottom: 0;
+        left: 0;
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        /* height: 92.8%; */
+        height: 92.5%;
+        text-align: center;
+      }
+      .content {
+        margin-top: 28px;
+        height: 144px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+      }
+
+      .card-content h2 {
+        margin: 0px 0px 0px 0px;
+        text-align: center;
+        font-size: 36px;
+        line-height: 35px;
+        padding: 4px 50px;
+        font-weight: bold;
+        background: linear-gradient(
+          to right,
+          #480c7a,
+          #e42f76,
+          #ea4b6e,
+          #f36a69
+        );
+        background-clip: text; /* Standard property */
+        -webkit-background-clip: text; /* For WebKit/Blink based browsers */
+        -moz-background-clip: text; /* For Mozilla Firefox */
+        -o-background-clip: text; /* For Opera */
+        -ms-background-clip: text; /* For Microsoft Edge */
+        color: transparent; /* Transparent text color */
+        z-index: 1000;
+      }
+
+      .card-content p {
+        text-align: center;
+        font-size: 27px;
+        padding: 4px 50px;
+        margin: 0px;
+        color: #541b86;
+      }
+
+      .card-content .address {
+        text-align: justify;
+        height: 60px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        font-size: 25px;
+        color: black;
+      }
+
+      .image {
+        width: 162px;
+        height: 162px;
+        border-radius: 90px;
+      }
+
+      .down-content h3 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #3f5bad;
+        margin: 7px 0px;
+      }
+      .ul {
+        height: 193px;
+        margin: 3px 0px;
+        padding: 0px 68px;
+        /* text-align: justify; */
+      }
+      .ul li {
+        list-style: none;
+        font-size: 21px;
+        margin-top: 2px;
+      }
+      .phone {
+        color: white !important;
+      }
+
+      @media (max-width: 800px) {
+        #cardsContainer {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
+        }
+      }
+      @media (max-width: 572px) {
+        #cardsContainer {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+        }
+      }
+    </style>
+
+    
+  </head>
+
+  <body>
+    <div id="cardsContainer">
+      <!-- Cards will be dynamically added here -->
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $.ajax({
+          url: "https://api-inter.vaada.app/fetchDetailsForMob",
+          type: "GET",
+          success: function (res) {
+            var cardsHtml = "";
+
+            res.forEach(function (item) {
+              // Remove words starting with "https:"
+              var customProductsWithoutUrls = item.customProducts.replace(
+                /\bhttps?:\S*\s*/g,
+                ""
+              );
+              var productsArray = customProductsWithoutUrls
+                .split(/,|\n•/)
+                .map(function (product) {
+                  return product.trim();
+                });
+
+              var totalLength = productsArray.join(", ").length; // Calculate total character length
+
+              var productsList;
+              if (totalLength <= 50) {
+                // If total length is within 50 characters, use the original list
+                productsList = productsArray
+                  .map(function (product) {
+                    return "<li>" + "-" + "&nbsp" + product + "</li>";
+                  })
+                  .join("");
+              } else {
+                // If total length exceeds 50 characters, truncate the list
+                var truncatedList = [];
+                var currentLength = 0;
+                for (var i = 0; i < productsArray.length; i++) {
+                  var product = productsArray[i];
+                  if (currentLength + product.length + 2 <= 100) {
+                    // Add 2 for ', ' separator
+                    truncatedList.push(product);
+                    currentLength += product.length + 2;
+                  } else {
+                    truncatedList.push("more ...");
+                    // return false
+                    break;
+                  }
+                }
+                productsList = truncatedList
+                  .map(function (product) {
+                    return "<li>" + "-" + "&nbsp" + product + "</li>";
+                  })
+                  .join("");
+              }
+
+              var cardHtml =
+                '<div class="card" data-name="${item.name}" data-image-url="${item.imageUrl}">' +
+                '<img class="logo" src="check.jpg" alt="Card Image">' +
+                '<div class="card-content">' +
+                '<img class="image" src="' +
+                item?.imageUrl +
+                '" alt="Card Image">' +
+                '<div class="content">' +
+                "<h2>" +
+                item?.name +
+                "</h2>" +
+                "<p>" +
+                item.productsAndServices +
+                "</p>" +
+                "</div>" +
+                '<p class="address">' +
+                item.neighborhood +
+                "," +
+                "&nbsp" +
+                "<span>" +
+                item.city +
+                "</span>" +
+                "</p>" +
+                '<div class="down-content">' +
+                "<h3>" +
+                "Products & Services Offered" +
+                "</h3>" +
+                "<ul class='ul'>" +
+                productsList + // Insert the generated list items here
+                "</ul>" +
+                "</div>" +
+                "<h2 class='phone'>" +
+                item.phone +
+                "</h2>" +
+                "</div>" +
+                "</div>";
+              cardsHtml += cardHtml;
+            });
+            $("#cardsContainer").html(cardsHtml);
+             // Attach click event listener to dynamically generated .card elements
+             $('.card').click(function () {
+                var card = $(this);
+                var name = card.data('name');
+                var imageUrl = card.data('image-url');
+
+                // Use html2canvas to capture the card as an image
+                html2canvas(card[0], {
+                    onrendered: function (canvas) {
+                        // Convert canvas to data URL
+                        var imageData = canvas.toDataURL('image/png');
+
+                        // Create a link element
+                        var a = document.createElement('a');
+                        a.href = imageData;
+                        a.download = 'card.png';
+
+                        // Append the link to the body and trigger a click event
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    }
+                });
+            });
+          },
+          error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+        });
+      });
+  </script>
+  </body>
+</html>
