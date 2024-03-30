@@ -248,12 +248,12 @@
                 html2canvas(card[0], {
                     onrendered: function (canvas) {
                         // Convert canvas to data URL
-                        var imageData = canvas.toDataURL('image/png');
+                        var imageData = canvas.toDataURL('image/jpeg');
 
                         // Create a link element
                         var a = document.createElement('a');
                         a.href = imageData;
-                        a.download = 'card.png';
+                        a.download = 'card.jpg';
 
                         // Append the link to the body and trigger a click event
                         document.body.appendChild(a);
