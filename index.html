@@ -13,6 +13,7 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 10px;
+        width: 70%;
         justify-items: center;
       }
 
@@ -133,10 +134,47 @@
           grid-template-columns: repeat(1, 1fr);
           gap: 10px;
         }
+        .card {
+          width: auto;
+          height: 679px;
+        }
+        .image {
+          width: 138px;
+          height: 136px;
+        }
+        .card-content h2 {
+          font-size: 31px;
+          line-height: 35px;
+          padding: 0px 30px;
+        }
+        .card-content p {
+    font-size: 23px;
+    padding: 2px 34px;
+}
+        .content {
+          margin-top: 16px;
+        }
+        .card-content .address {
+          text-align: justify;
+          height: 42px;
+          font-size: 22px;
+        }
+
+        .down-content h3 {
+          font-size: 22px;
+        }
+        .ul {
+          height: 160px;
+          margin: 2px 0px;
+          padding: 0px 58px;
+          /* text-align: justify; */
+        }
+        .ul li {
+          font-size: 17px;
+          margin-top: 2px;
+        }
       }
     </style>
-
-    
   </head>
 
   <body>
@@ -238,36 +276,36 @@
               cardsHtml += cardHtml;
             });
             $("#cardsContainer").html(cardsHtml);
-             // Attach click event listener to dynamically generated .card elements
-             $('.card').click(function () {
-                var card = $(this);
-                var name = card.data('name');
-                var imageUrl = card.data('image-url');
+            // Attach click event listener to dynamically generated .card elements
+            $(".card").click(function () {
+              var card = $(this);
+              var name = card.data("name");
+              var imageUrl = card.data("image-url");
 
-                // Use html2canvas to capture the card as an image
-                html2canvas(card[0], {
-                    onrendered: function (canvas) {
-                        // Convert canvas to data URL
-                        var imageData = canvas.toDataURL('image/jpeg');
+              // Use html2canvas to capture the card as an image
+              html2canvas(card[0], {
+                onrendered: function (canvas) {
+                  // Convert canvas to data URL
+                  var imageData = canvas.toDataURL("image/jpeg");
 
-                        // Create a link element
-                        var a = document.createElement('a');
-                        a.href = imageData;
-                        a.download = 'card.jpg';
+                  // Create a link element
+                  var a = document.createElement("a");
+                  a.href = imageData;
+                  a.download = "card.jpg";
 
-                        // Append the link to the body and trigger a click event
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                    }
-                });
+                  // Append the link to the body and trigger a click event
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                },
+              });
             });
           },
           error: function (xhr, status, error) {
             console.error("Error fetching data:", error);
-        }
+          },
         });
       });
-  </script>
+    </script>
   </body>
 </html>
