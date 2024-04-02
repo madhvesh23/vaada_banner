@@ -261,64 +261,81 @@
 
             $("#cardsContainer").html(cardsHtml);
 
-            $(".card").each(function (index, cardElement) {
-              var card = $(cardElement);
-              var name = card.data("name");
-              var imageUrl = card.data("image-url");
+          // Initialize an array to store all card elements
+var allCards = $(".card");
 
-              // Use html2canvas to capture the card as an image
-              captureCardImage(card, index, name);
-            });
+$(".card").click(function () {
+    // Use html2canvas to capture images of all cards
+    captureAllCardImages(allCards);
+});
 
-            function captureCardImage(card, index, name) {
-              var retryCount = 3; // Number of retries
-              var captureAttempt = 1;
+function captureAllCardImages(cards) {
+    // Loop through each card element
+    cards.each(function (index, cardElement) {
+        var card = $(cardElement);
+        var name = card.data("name");
 
-              function capture() {
-                html2canvas(card[0], {
-                  onrendered: function (cardCanvas) {
+        // Use html2canvas to capture the card as an image
+        captureCardImage(card, name, index + 1, cards.length);
+    });
+}
+
+function captureCardImage(card, name, currentIndex, totalCards) {
+    var retryCount = 3; // Number of retries
+    var captureAttempt = 1;
+
+    function capture() {
+        html2canvas(card[0], {
+            onrendered: function (cardCanvas) {
+                // Check if the captured image is blank (black)
+                if (!isBlank(cardCanvas)) {
                     // Convert card canvas to data URL
                     var imageData = cardCanvas.toDataURL("image/jpeg");
 
-                    if (imageData.indexOf("data:image/jpeg;base64,") === 0) {
-                      // Create a link element
-                      var a = document.createElement("a");
-                      a.href = imageData;
-                      a.download = "card_" + (index + 1) + ".jpg"; // Add index to file name to make each download unique
+                    // Create a link element
+                    var a = document.createElement("a");
+                    a.href = imageData;
+                    a.download = name + "_" + currentIndex + ".jpg";
 
-                      // Append the link to the body and trigger a click event
-                      document.body.appendChild(a);
-                      a.click();
-                      document.body.removeChild(a);
-                    } else {
-                      // Retry if the captured image data is invalid
-                      if (captureAttempt < retryCount) {
+                    // Append the link to the body and trigger a click event
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    // Retry if captured image is blank
+                    if (captureAttempt < retryCount) {
                         captureAttempt++;
-                        console.log(
-                          "Retry capturing card image for " +
-                            name +
-                            " (Attempt " +
-                            captureAttempt +
-                            ")"
-                        );
+                        console.log("Retry capturing card image for " + name + " (Attempt " + captureAttempt + ")");
                         capture();
-                      } else {
-                        console.error(
-                          "Failed to capture card image for " +
-                            name +
-                            " after " +
-                            retryCount +
-                            " attempts."
-                        );
-                      }
+                    } else {
+                        console.error("Failed to capture card image for " + name + " after " + retryCount + " attempts.");
                     }
-                  },
-                  useCORS: true, // Ensure that CORS is enabled to prevent security errors
-                });
-              }
+                }
+            },
+            useCORS: true, // Ensure that CORS is enabled to prevent security errors
+        });
+    }
 
-              capture(); // Initial capture attempt
-            }
+    capture(); // Initial capture attempt
+
+    // If it's the last card, display a message after all images are downloaded
+    if (currentIndex === totalCards) {
+        console.log("All images downloaded successfully.");
+    }
+}
+
+function isBlank(canvas) {
+    var blankCanvas = document.createElement("canvas");
+    blankCanvas.width = canvas.width;
+    blankCanvas.height = canvas.height;
+
+    var ctx = blankCanvas.getContext("2d");
+    ctx.fillStyle = "#FFFFFF"; // Set color to white
+    ctx.fillRect(0, 0, blankCanvas.width, blankCanvas.height); // Fill with white color
+
+    return canvas.toDataURL() === blankCanvas.toDataURL();
+}
+
           },
           error: function (xhr, status, error) {
             console.error("Error fetching data:", error);
