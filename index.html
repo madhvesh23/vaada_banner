@@ -199,46 +199,39 @@
             var cardsHtml = "";
 
             res.forEach(function (item) {
-              // Remove words starting with "https:"
-              var customProductsWithoutUrls = item.customProducts.replace(
-                /\bhttps?:\S*\s*/g,
-                ""
-              );
-              var productsArray = customProductsWithoutUrls
+              var productsArray = item.customProducts
                 .split(/,|\n•/)
                 .map(function (product) {
                   return product.trim();
                 });
 
-              var totalLength = productsArray.join(", ").length; // Calculate total character length
-
               var productsList;
-              if (totalLength <= 50) {
-                // If total length is within 50 characters, use the original list
+
+              if (productsArray.length <= 5) {
+                // If there are 4 or fewer items, use the original list
                 productsList = productsArray
                   .map(function (product) {
-                    return "<li>" + "-" + "&nbsp" + product + "</li>";
+                    // Truncate the product string if it exceeds 50 characters
+                    var truncatedProduct =
+                      product.length > 50
+                        ? product.slice(0, 50) + "..."
+                        : product;
+                    return "<li>" + "-" + "&nbsp" + truncatedProduct + "</li>";
                   })
                   .join("");
               } else {
-                // If total length exceeds 50 characters, truncate the list
-                var truncatedList = [];
-                var currentLength = 0;
-                for (var i = 0; i < productsArray.length; i++) {
-                  var product = productsArray[i];
-                  if (currentLength + product.length + 2 <= 100) {
-                    // Add 2 for ', ' separator
-                    truncatedList.push(product);
-                    currentLength += product.length + 2;
-                  } else {
-                    truncatedList.push("more ...");
-                    // return false
-                    break;
-                  }
-                }
+                // If there are more than 4 items, truncate the list
+                var truncatedList = productsArray.slice(0, 4); // Take first 4 items
+                truncatedList.push("more ...");
+
                 productsList = truncatedList
                   .map(function (product) {
-                    return "<li>" + "-" + "&nbsp" + product + "</li>";
+                    // Truncate the product string if it exceeds 50 characters
+                    var truncatedProduct =
+                      product.length > 40
+                        ? product.slice(0, 40) + "..."
+                        : product;
+                    return "<li>" + "-" + "&nbsp" + truncatedProduct + "</li>";
                   })
                   .join("");
               }
@@ -268,60 +261,65 @@
 
             $("#cardsContainer").html(cardsHtml);
             $(".card").click(function () {
-    var card = $(this);
-    var name = card.data("name");
-    var imageUrl = card.data("image-url");
+              var card = $(this);
+              var name = card.data("name");
+              var imageUrl = card.data("image-url");
 
-    // Use html2canvas to capture the card as an image
-    html2canvas(card[0], {
-        onrendered: function (cardCanvas) {
-            // Create a new canvas for rendering the text
-            var textCanvas = document.createElement("canvas");
-            var ctx = textCanvas.getContext("2d");
+              // Use html2canvas to capture the card as an image
+              html2canvas(card[0], {
+                onrendered: function (cardCanvas) {
+                  // Create a new canvas for rendering the text
+                  var textCanvas = document.createElement("canvas");
+                  var ctx = textCanvas.getContext("2d");
 
-            // Set canvas dimensions
-            textCanvas.width = cardCanvas.width;
-            textCanvas.height = cardCanvas.height;
+                  // Set canvas dimensions
+                  textCanvas.width = cardCanvas.width;
+                  textCanvas.height = cardCanvas.height;
 
-            // Render the text with linear gradient
-            ctx.font = "bold 36px Arial";
-            var gradient = ctx.createLinearGradient(0, 0, textCanvas.width, 0);
-            gradient.addColorStop(0, "#480c7a");
-            gradient.addColorStop(0.33, "#e42f76");
-            gradient.addColorStop(0.66, "#ea4b6e");
-            gradient.addColorStop(1, "#f36a69");
-            ctx.fillStyle = gradient;
-            
-            // Increase padding from left and right
-            var paddingLR = 50; // Increased padding from left and right in pixels
-            
-            // Calculate X position with increased padding
-            var xPosition = paddingLR; // Start from left padding
-            
-            ctx.textAlign = "left"; // Set text alignment to left
-            ctx.fillText(name, xPosition, 300); // Adjust Y position as needed
+                  // Render the text with linear gradient
+                  ctx.font = "bold 36px Arial";
+                  var gradient = ctx.createLinearGradient(
+                    0,
+                    0,
+                    textCanvas.width,
+                    0
+                  );
+                  gradient.addColorStop(0, "#480c7a");
+                  gradient.addColorStop(0.33, "#e42f76");
+                  gradient.addColorStop(0.66, "#ea4b6e");
+                  gradient.addColorStop(1, "#f36a69");
+                  ctx.fillStyle = gradient;
 
-            // Merge the text canvas with the card canvas
-            var mergedCanvas = document.createElement("canvas");
-            mergedCanvas.width = textCanvas.width;
-            mergedCanvas.height = textCanvas.height;
-            var mergedCtx = mergedCanvas.getContext("2d");
-            mergedCtx.drawImage(cardCanvas, 0, 0);
-            mergedCtx.drawImage(textCanvas, 0, 0);
+                  // Increase padding from left and right
+                  var paddingLR = 50; // Increased padding from left and right in pixels
 
-            // Convert merged canvas to data URL
-            var imageData = mergedCanvas.toDataURL("image/jpeg");
+                  // Calculate X position with increased padding
+                  var xPosition = paddingLR; // Start from left padding
 
-            // Create a link element
-            var a = document.createElement("a");
-            a.href = imageData;
-            a.download = "card.jpg";
+                  ctx.textAlign = "left"; // Set text alignment to left
+                  ctx.fillText(name, xPosition, 300); // Adjust Y position as needed
 
-            // Append the link to the body and trigger a click event
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        },
+                  // Merge the text canvas with the card canvas
+                  var mergedCanvas = document.createElement("canvas");
+                  mergedCanvas.width = textCanvas.width;
+                  mergedCanvas.height = textCanvas.height;
+                  var mergedCtx = mergedCanvas.getContext("2d");
+                  mergedCtx.drawImage(cardCanvas, 0, 0);
+                  mergedCtx.drawImage(textCanvas, 0, 0);
+
+                  // Convert merged canvas to data URL
+                  var imageData = mergedCanvas.toDataURL("image/jpeg");
+
+                  // Create a link element
+                  var a = document.createElement("a");
+                  a.href = imageData;
+                  a.download = "card.jpg";
+
+                  // Append the link to the body and trigger a click event
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                },
                 useCORS: true, // Ensure that CORS is enabled to prevent security errors
               });
             });
