@@ -19,8 +19,8 @@
 
       .card {
         position: relative;
-        width: 453px;
-        height: 800px;
+        width: 414px;
+        height: 732px;
         margin-bottom: 20px;
       }
       .card:hover {
@@ -56,9 +56,9 @@
       .card-content h2 {
         margin: 0px 0px 0px 0px;
         text-align: center;
-        font-size: 36px;
+        font-size: 33px;
         line-height: 35px;
-        padding: 4px 50px;
+        padding: 4px 45px;
         font-weight: bold;
         background: linear-gradient(
           to right,
@@ -67,18 +67,18 @@
           #ea4b6e,
           #f36a69
         );
-        background-clip: text; /* Standard property */
-        -webkit-background-clip: text; /* For WebKit/Blink based browsers */
-        -moz-background-clip: text; /* For Mozilla Firefox */
-        -o-background-clip: text; /* For Opera */
-        -ms-background-clip: text; /* For Microsoft Edge */
-        color: transparent; /* Transparent text color */
+        background-clip: text;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        -o-background-clip: text;
+        -ms-background-clip: text;
+        color: transparent;
         z-index: 1000;
       }
 
       .card-content p {
         text-align: center;
-        font-size: 27px;
+        font-size: 23px;
         padding: 4px 50px;
         margin: 0px;
         color: #541b86;
@@ -86,43 +86,43 @@
 
       .card-content .address {
         text-align: justify;
-        height: 60px;
+        height: 43px;
         display: flex;
         align-items: flex-end;
         justify-content: center;
-        font-size: 25px;
+        font-size: 22px;
         color: black;
-        padding: 4px 0px!important;
+        padding: 4px 0px !important;
       }
 
       .image {
-        width: 162px;
-        height: 162px;
+        width: 147px;
+        height: 147px;
         border-radius: 90px;
       }
 
       .down-content h3 {
-        font-size: 28px;
+        font-size: 23px;
         font-weight: 700;
         color: #3f5bad;
-        margin: 7px 0px;
+        margin: 2px 0px;
       }
       .ul {
-        height: 193px;
+        height: 180px;
         margin: 3px 0px;
         padding: 0px 68px;
         /* text-align: justify; */
       }
       .ul li {
         list-style: none;
-        font-size: 21px;
+        font-size: 18px;
         margin-top: 2px;
       }
       .phone {
         color: white !important;
       }
 
-      @media (max-width: 800px) {
+      @media (max-width: 1350px) {
         #cardsContainer {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
@@ -140,34 +140,34 @@
           max-height: 600px;
         }
         .card-content {
-    height: 92.9%;
- }
+          height: 92.9%;
+        }
         .image {
           width: 122px;
           height: 122px;
         }
         .card-content h2 {
-          font-size: 29px;
+          font-size: 27px;
           line-height: 35px;
           padding: 0px 30px;
         }
         .card-content p {
-          font-size: 21px;
+          font-size: 18px;
           padding: 2px 32px;
         }
         .content {
-          margin-top: 7px;
+          margin-top: 2px;
         }
         .card-content .address {
           text-align: justify;
-          height: 25px;
-          font-size: 19px;
-          padding: 4px 11px!important;
+          height: 21px;
+          font-size: 17px;
+          padding: 4px 11px !important;
         }
 
         .down-content h3 {
-          font-size: 22px;
-          margin-top: 0px;
+          font-size: 18px;
+          margin-top: 2px;
         }
         .ul {
           height: 140px;
@@ -243,67 +243,86 @@
                   .join("");
               }
 
-              var cardHtml =
-                '<div class="card" data-name="${item.name}" data-image-url="${item.imageUrl}">' +
-                '<img class="logo" src="check.jpg" alt="Card Image">' +
-                '<div class="card-content">' +
-                '<img class="image" src="' +
-                item?.imageUrl +
-                '" alt="Card Image">' +
-                '<div class="content">' +
-                "<h2>" +
-                item?.name +
-                "</h2>" +
-                "<p>" +
-                item.productsAndServices +
-                "</p>" +
-                "</div>" +
-                '<p class="address">' +
-                item.neighborhood +
-                "," +
-                "&nbsp" +
-                
-                item.city +
-                
-                "</p>" +
-                '<div class="down-content">' +
-                "<h3>" +
-                "Products & Services Offered" +
-                "</h3>" +
-                "<ul class='ul'>" +
-                productsList + // Insert the generated list items here
-                "</ul>" +
-                "</div>" +
-                "<h2 class='phone'>" +
-                item.phone +
-                "</h2>" +
-                "</div>" +
-                "</div>";
+              var cardHtml = `<div class="card" data-name="${item.name}" data-image-url="${item.imageUrl}">
+                        <img class="logo" src="check.jpg" alt="Card Image">
+                        <div class="card-content">
+                            <img class="image" src="${item.imageUrl}" alt="Card Image">
+                            <div class="content">
+                                <h2>${item?.name}</h2>
+                                <p>${item.productsAndServices}</p>
+                            </div>
+                            <p class="address">
+                                ${item.neighborhood},&nbsp;${item.city}
+                            </p>
+                            <div class="down-content">
+                                <h3>Products & Services Offered</h3>
+                                <ul class='ul'>
+                                    ${productsList}
+                                </ul>
+                            </div>
+                            <h2 class='phone'>${item.phone}</h2>
+                        </div>
+                    </div>`;
               cardsHtml += cardHtml;
             });
+
             $("#cardsContainer").html(cardsHtml);
-            // Attach click event listener to dynamically generated .card elements
             $(".card").click(function () {
-              var card = $(this);
-              var name = card.data("name");
-              var imageUrl = card.data("image-url");
+    var card = $(this);
+    var name = card.data("name");
+    var imageUrl = card.data("image-url");
 
-              // Use html2canvas to capture the card as an image
-              html2canvas(card[0], {
-                onrendered: function (canvas) {
-                  // Convert canvas to data URL
-                  var imageData = canvas.toDataURL("image/jpeg");
+    // Use html2canvas to capture the card as an image
+    html2canvas(card[0], {
+        onrendered: function (cardCanvas) {
+            // Create a new canvas for rendering the text
+            var textCanvas = document.createElement("canvas");
+            var ctx = textCanvas.getContext("2d");
 
-                  // Create a link element
-                  var a = document.createElement("a");
-                  a.href = imageData;
-                  a.download = "card.jpg";
+            // Set canvas dimensions
+            textCanvas.width = cardCanvas.width;
+            textCanvas.height = cardCanvas.height;
 
-                  // Append the link to the body and trigger a click event
-                  document.body.appendChild(a);
-                  a.click();
-                  document.body.removeChild(a);
-                },
+            // Render the text with linear gradient
+            ctx.font = "bold 36px Arial";
+            var gradient = ctx.createLinearGradient(0, 0, textCanvas.width, 0);
+            gradient.addColorStop(0, "#480c7a");
+            gradient.addColorStop(0.33, "#e42f76");
+            gradient.addColorStop(0.66, "#ea4b6e");
+            gradient.addColorStop(1, "#f36a69");
+            ctx.fillStyle = gradient;
+            
+            // Increase padding from left and right
+            var paddingLR = 50; // Increased padding from left and right in pixels
+            
+            // Calculate X position with increased padding
+            var xPosition = paddingLR; // Start from left padding
+            
+            ctx.textAlign = "left"; // Set text alignment to left
+            ctx.fillText(name, xPosition, 300); // Adjust Y position as needed
+
+            // Merge the text canvas with the card canvas
+            var mergedCanvas = document.createElement("canvas");
+            mergedCanvas.width = textCanvas.width;
+            mergedCanvas.height = textCanvas.height;
+            var mergedCtx = mergedCanvas.getContext("2d");
+            mergedCtx.drawImage(cardCanvas, 0, 0);
+            mergedCtx.drawImage(textCanvas, 0, 0);
+
+            // Convert merged canvas to data URL
+            var imageData = mergedCanvas.toDataURL("image/jpeg");
+
+            // Create a link element
+            var a = document.createElement("a");
+            a.href = imageData;
+            a.download = "card.jpg";
+
+            // Append the link to the body and trigger a click event
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        },
+                useCORS: true, // Ensure that CORS is enabled to prevent security errors
               });
             });
           },
