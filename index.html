@@ -55,20 +55,27 @@
         text-align: center;
       }
       .content {
-        margin-top: 28px;
-        height: 144px;
+        margin-top: 24px;
+        height: 142px;
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
+        justify-content: flex-start;
       }
 
       .card-content h2 {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
         margin: 0px 0px 0px 0px;
         text-align: center;
-        font-size: 31px;
-        line-height: 35px;
-        padding: 4px 30px;
-        font-weight: bold;
+        font-size: 27.1px;
+        line-height: 32.5px;
+        padding: 4px 43px;
+        font-weight: 540;
+        height: 70px;
+        color: #e62a75;
+        z-index: 1000;
+        /* letter-spacing: 0.5px; */
         /* background: linear-gradient(
           to right,
           #480c7a,
@@ -81,26 +88,31 @@
         -moz-background-clip: text;
         -o-background-clip: text;
         -ms-background-clip: text; */
-        color: #e62a75;
+        /* color: #e62a75; */
+        
+        
+        color: #C92586;
         z-index: 1000;
       }
 
       .card-content p {
         text-align: center;
-        font-size: 22px;
+        font-size: 21.5px;
         padding: 4px 43px;
         margin: 0px;
-        color: #541b86;
-        line-height: 26px;
+        color: #5E1F92;
+        line-height: 24px;
+        font-weight: 480;
       }
 
       .card-content .address {
-        height: 43px;
+        height: 45px;
         display: flex;
         align-items: flex-end;
+        /* letter-spacing: 1px; */
         justify-content: center;
-        font-size: 22px;
-        color: black;
+        font-size: 18.5px;
+        color: #141819;
         padding: 4px 0px !important;
       }
 
@@ -111,19 +123,22 @@
       }
 
       .down-content h3 {
-        font-size: 23px;
-        font-weight: 700;
-        color: #3f5bad;
-        margin: 2px 0px;
+        font-size: 20px;
+        font-weight: 530;
+        color: #3c58aced;
+        margin: 5px 0px -1px 0px;
+        padding: 0px 50px;
+        letter-spacing: -1px;
       }
       .ul {
-        height: 177px;
-        margin: 3px 0px;
-        padding: 0px 68px;
+        height: 180px;
+        margin: 2px 0px;
+        padding: 0px 72px;
       }
       .ul li {
         list-style: none;
-        font-size: 18px;
+        font-size: 17px;
+        color: black;
         margin-top: 2px;
         line-height: 21px;
       }
@@ -257,7 +272,7 @@
                                 ${item.neighborhood},&nbsp;${item.city}
                             </p>
                             <div class="down-content">
-                                <h3>Products & Services Offered</h3>
+                                <h3>Products & Service Offered</h3>
                                 <ul class='ul'>
                                     ${productsList}
                                 </ul>
@@ -286,7 +301,7 @@
 
                 // Use html2canvas to capture the card as an image
                 captureCardImage(card, name, index + 1, cards.length);
-        return false;
+                return false;
               });
             }
 
