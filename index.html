@@ -310,78 +310,78 @@
             }
 
             function captureCardImage(card, name, currentIndex, totalCards) {
-  var retryCount = 3; // Number of retries
-  var captureAttempt = 1;
+              var retryCount = 3; // Number of retries
+              var captureAttempt = 1;
 
-  function capture() {
-    // Get the computed styles of the card element
-    var computedStyle = window.getComputedStyle(card[0]);
-    
-    // Define a scale factor
-    var scaleFactor = 4; // Increase scale for higher quality
+              function capture() {
+                // Get the computed styles of the card element
+                var computedStyle = window.getComputedStyle(card[0]);
 
-    // Create a canvas element with the computed dimensions
-    var canvas = document.createElement('canvas');
-    canvas.width = parseFloat(computedStyle.width) * scaleFactor;
-    canvas.height = parseFloat(computedStyle.height) * scaleFactor;
-    var ctx = canvas.getContext('2d');
+                // Define a scale factor
+                // var scaleFactor = 4; // Increase scale for higher quality
 
-    html2canvas(card[0], {
-      canvas: canvas, // Use the created canvas
-      scale: scaleFactor, // Set scale factor
-      logging: false, // Disable logging for better performance
-      allowTaint: true, // Allow tainting for foreign objects
-      foreignObjectRendering: 'auto', // Use automatic foreignObject rendering for better SVG support
-      backgroundColor: '#ffffff', // Set background color to white
-      onrendered: function (cardCanvas) {
-        // Check if the captured image is blank (black)
-        if (!isBlank(cardCanvas)) {
-          // Convert card canvas to data URL
-          var imageData = cardCanvas.toDataURL("image/png");
+                // Create a canvas element with the computed dimensions
+                var canvas = document.createElement("canvas");
+                canvas.width = parseFloat(computedStyle.width);
+                canvas.height = parseFloat(computedStyle.height);
+                var ctx = canvas.getContext("2d");
 
-          // Create a link element
-          var a = document.createElement("a");
-          a.href = imageData;
-          a.download = name + "_" + currentIndex + ".png";
+                html2canvas(card[0], {
+                  canvas: canvas, // Use the created canvas
+                  scale: 1, // Set scale factor
+                  logging: false, // Disable logging for better performance
+                  allowTaint: true, // Allow tainting for foreign objects
+                  foreignObjectRendering: "auto", // Use automatic foreignObject rendering for better SVG support
+                  backgroundColor: "#ffffff", // Set background color to white
+                  onrendered: function (cardCanvas) {
+                    // Check if the captured image is blank (black)
+                    if (!isBlank(cardCanvas)) {
+                      // Convert card canvas to data URL
+                      var imageData = cardCanvas.toDataURL("image/png");
 
-          // Append the link to the body and trigger a click event
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-        } else {
-          // Retry if captured image is blank
-          if (captureAttempt < retryCount) {
-            captureAttempt++;
-            console.log(
-              "Retry capturing card image for " +
-              name +
-              " (Attempt " +
-              captureAttempt +
-              ")"
-            );
-            capture();
-          } else {
-            console.error(
-              "Failed to capture card image for " +
-              name +
-              " after " +
-              retryCount +
-              " attempts."
-            );
-          }
-        }
-      },
-      useCORS: true, // Ensure that CORS is enabled to prevent security errors
-    });
-  }
+                      // Create a link element
+                      var a = document.createElement("a");
+                      a.href = imageData;
+                      a.download = name + "_" + currentIndex + ".png";
 
-  capture(); // Initial capture attempt
+                      // Append the link to the body and trigger a click event
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                    } else {
+                      // Retry if captured image is blank
+                      if (captureAttempt < retryCount) {
+                        captureAttempt++;
+                        console.log(
+                          "Retry capturing card image for " +
+                            name +
+                            " (Attempt " +
+                            captureAttempt +
+                            ")"
+                        );
+                        capture();
+                      } else {
+                        console.error(
+                          "Failed to capture card image for " +
+                            name +
+                            " after " +
+                            retryCount +
+                            " attempts."
+                        );
+                      }
+                    }
+                  },
+                  useCORS: true, // Ensure that CORS is enabled to prevent security errors
+                });
+              }
 
-  // If it's the last card, display a message after all images are downloaded
-  if (currentIndex === totalCards) {
-    console.log("All images downloaded successfully.");
-  }
-}
+              capture(); // Initial capture attempt
+
+              // If it's the last card, display a message after all images are downloaded
+              if (currentIndex === totalCards) {
+                console.log("All images downloaded successfully.");
+              }
+            }
 
             function isBlank(canvas) {
               var blankCanvas = document.createElement("canvas");
