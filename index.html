@@ -113,7 +113,7 @@
         font-size: 18.5px;
         color: #101413;
         padding: 4px 0px !important;
-        font-weight:400 ;
+        font-weight:410 ;
       }
 
       .image {
@@ -305,67 +305,70 @@
 
                 // Use html2canvas to capture the card as an image
                 captureCardImage(card, name, index + 1, cards.length);
+                return false;
               });
             }
 
             function captureCardImage(card, name, currentIndex, totalCards) {
-              var retryCount = 3; // Number of retries
-              var captureAttempt = 1;
+  var retryCount = 3; // Number of retries
+  var captureAttempt = 1;
 
-              function capture() {
-                html2canvas(card[0], 
-                {
-                  scale: 1, // Use device pixel ratio for higher quality
-                  logging: true, // Enable logging for debugging
-                  onrendered: function (cardCanvas) {
-                    // Check if the captured image is blank (black)
-                    if (!isBlank(cardCanvas)) {
-                      // Convert card canvas to data URL
-                      var imageData = cardCanvas.toDataURL("image/png");
+  function capture() {
+    html2canvas(card[0], {
+      scale: 2, // Use higher scale for higher quality
+      logging: false, // Disable logging for better performance
+      allowTaint: true, // Allow tainting for foreign objects
+      foreignObjectRendering: true, // Use foreignObject rendering for better SVG support
+      backgroundColor: null, // Use default background color
+      onrendered: function (cardCanvas) {
+        // Check if the captured image is blank (black)
+        if (!isBlank(cardCanvas)) {
+          // Convert card canvas to data URL
+          var imageData = cardCanvas.toDataURL("image/png");
 
-                      // Create a link element
-                      var a = document.createElement("a");
-                      a.href = imageData;
-                      a.download = name + "_" + currentIndex + ".png";
+          // Create a link element
+          var a = document.createElement("a");
+          a.href = imageData;
+          a.download = name + "_" + currentIndex + ".png";
 
-                      // Append the link to the body and trigger a click event
-                      document.body.appendChild(a);
-                      a.click();
-                      document.body.removeChild(a);
-                    } else {
-                      // Retry if captured image is blank
-                      if (captureAttempt < retryCount) {
-                        captureAttempt++;
-                        console.log(
-                          "Retry capturing card image for " +
-                            name +
-                            " (Attempt " +
-                            captureAttempt +
-                            ")"
-                        );
-                        capture();
-                      } else {
-                        console.error(
-                          "Failed to capture card image for " +
-                            name +
-                            " after " +
-                            retryCount +
-                            " attempts."
-                        );
-                      }
-                    }
-                  },
-                  useCORS: true, // Ensure that CORS is enabled to prevent security errors
-                });
-              }
+          // Append the link to the body and trigger a click event
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } else {
+          // Retry if captured image is blank
+          if (captureAttempt < retryCount) {
+            captureAttempt++;
+            console.log(
+              "Retry capturing card image for " +
+                name +
+                " (Attempt " +
+                captureAttempt +
+                ")"
+            );
+            capture();
+          } else {
+            console.error(
+              "Failed to capture card image for " +
+                name +
+                " after " +
+                retryCount +
+                " attempts."
+            );
+          }
+        }
+      },
+      useCORS: true, // Ensure that CORS is enabled to prevent security errors
+    });
+  }
 
-              capture(); // Initial capture attempt
+  capture(); // Initial capture attempt
 
-              // If it's the last card, display a message after all images are downloaded
-              if (currentIndex === totalCards) {
-                console.log("All images downloaded successfully.");
-              }
-            }
+  // If it's the last card, display a message after all images are downloaded
+  if (currentIndex === totalCards) {
+    console.log("All images downloaded successfully.");
+  }
+}
 
             function isBlank(canvas) {
               var blankCanvas = document.createElement("canvas");
