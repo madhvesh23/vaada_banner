@@ -99,7 +99,7 @@
         font-size: 21.5px;
         padding: 4px 43px;
         margin: 0px;
-        color: #5B1A9A;
+        color: #5b1a9a;
         line-height: 24.4px;
         font-weight: 430;
       }
@@ -113,7 +113,7 @@
         font-size: 18.5px;
         color: #101413;
         padding: 4px 0px !important;
-        font-weight:410 ;
+        font-weight: 410;
       }
 
       .image {
@@ -145,7 +145,7 @@
         font-weight: 430;
       }
       .phone {
-        color: #FFFCFB !important;
+        color: #fffcfb !important;
         font-size: 30px !important;
         font-weight: 440 !important;
       }
@@ -305,7 +305,7 @@
 
                 // Use html2canvas to capture the card as an image
                 captureCardImage(card, name, index + 1, cards.length);
-                return false;
+                // return false;
               });
             }
 
@@ -314,12 +314,25 @@
   var captureAttempt = 1;
 
   function capture() {
+    // Get the computed styles of the card element
+    var computedStyle = window.getComputedStyle(card[0]);
+    
+    // Define a scale factor
+    var scaleFactor = 4; // Increase scale for higher quality
+
+    // Create a canvas element with the computed dimensions
+    var canvas = document.createElement('canvas');
+    canvas.width = parseFloat(computedStyle.width) * scaleFactor;
+    canvas.height = parseFloat(computedStyle.height) * scaleFactor;
+    var ctx = canvas.getContext('2d');
+
     html2canvas(card[0], {
-      scale: 2, // Use higher scale for higher quality
+      canvas: canvas, // Use the created canvas
+      scale: scaleFactor, // Set scale factor
       logging: false, // Disable logging for better performance
       allowTaint: true, // Allow tainting for foreign objects
-      foreignObjectRendering: true, // Use foreignObject rendering for better SVG support
-      backgroundColor: null, // Use default background color
+      foreignObjectRendering: 'auto', // Use automatic foreignObject rendering for better SVG support
+      backgroundColor: '#ffffff', // Set background color to white
       onrendered: function (cardCanvas) {
         // Check if the captured image is blank (black)
         if (!isBlank(cardCanvas)) {
@@ -341,19 +354,19 @@
             captureAttempt++;
             console.log(
               "Retry capturing card image for " +
-                name +
-                " (Attempt " +
-                captureAttempt +
-                ")"
+              name +
+              " (Attempt " +
+              captureAttempt +
+              ")"
             );
             capture();
           } else {
             console.error(
               "Failed to capture card image for " +
-                name +
-                " after " +
-                retryCount +
-                " attempts."
+              name +
+              " after " +
+              retryCount +
+              " attempts."
             );
           }
         }
