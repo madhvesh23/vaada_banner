@@ -99,9 +99,9 @@
         font-size: 21.5px;
         padding: 4px 43px;
         margin: 0px;
-        color: #5e1f92;
+        color: #5B1A9A;
         line-height: 24px;
-        font-weight: 480;
+        font-weight: 430;
       }
 
       .card-content .address {
@@ -111,8 +111,9 @@
         /* letter-spacing: 1px; */
         justify-content: center;
         font-size: 18.5px;
-        color: #141819;
+        color: #101413;
         padding: 4px 0px !important;
+        font-weight:400 ;
       }
 
       .image {
@@ -124,27 +125,27 @@
       .down-content h3 {
         font-size: 19px;
         font-weight: 500;
-        color: #2e50b5;
+        color: #485EB1;
         margin: 5px 0px -1px 0px;
         padding: 0px 50px;
         letter-spacing: -1px;
       }
       .ul {
-        height: 182px;
+        height: 185px;
         margin: 2px 0px;
         padding: 0px 80px;
       }
       .ul li {
         list-style: none;
         font-size: 16px;
-        color: black;
+        color: #161616;
         margin-top: 2px;
         line-height: 21px;
         letter-spacing: -1px;
         font-weight: 400;
       }
       .phone {
-        color: white !important;
+        color: #FFFCFB !important;
         font-size: 30px !important;
         font-weight: 440 !important;
       }
@@ -304,7 +305,6 @@
 
                 // Use html2canvas to capture the card as an image
                 captureCardImage(card, name, index + 1, cards.length);
-                return false;
               });
             }
 
@@ -313,10 +313,9 @@
               var captureAttempt = 1;
 
               function capture() {
-                html2canvas(card[0], {
-                  // width: card[0].scrollWidth, // Set width to card's scroll width
-                  // height: card[0].scrollHeight, // Set height to card's scroll height
-                  scale: window.devicePixelRatio, // Use device pixel ratio for higher quality
+                html2canvas(card[0], 
+                {
+                  scale: 1, // Use device pixel ratio for higher quality
                   logging: true, // Enable logging for debugging
                   onrendered: function (cardCanvas) {
                     // Check if the captured image is blank (black)
