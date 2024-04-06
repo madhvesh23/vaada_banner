@@ -223,6 +223,8 @@
         $.ajax({
           url: "https://api-inter.vaada.app/fetchDetailsForMob",
           type: "GET",
+          dataType: 'json',
+          crossDomain: true, 
           success: function (res) {
             var cardsHtml = "";
 
@@ -305,14 +307,14 @@
 
                 // Use html2canvas to capture the card as an image
                 captureCardImage(card, name, index + 1, cards.length);
-                // return false;
+                return false;
               });
             }
 
             function captureCardImage(card, name, currentIndex, totalCards) {
               var retryCount = 3; // Number of retries
               var captureAttempt = 1;
-
+              
               function capture() {
                 // Get the computed styles of the card element
                 var computedStyle = window.getComputedStyle(card[0]);
@@ -329,16 +331,16 @@
                 html2canvas(card[0], {
                   canvas: canvas, // Use the created canvas
                   scale: 1, // Set scale factor
-                  logging: false, // Disable logging for better performance
-                  allowTaint: true, // Allow tainting for foreign objects
-                  foreignObjectRendering: "auto", // Use automatic foreignObject rendering for better SVG support
+                  logging: true, // Disable logging for better performance
+                  // allowTaint: true, // Allow tainting for foreign objects
+                  // foreignObjectRendering: "auto", // Use automatic foreignObject rendering for better SVG support
                   backgroundColor: "#ffffff", // Set background color to white
                   onrendered: function (cardCanvas) {
                     // Check if the captured image is blank (black)
                     if (!isBlank(cardCanvas)) {
                       // Convert card canvas to data URL
                       var imageData = cardCanvas.toDataURL("image/png");
-
+                      console.log(imageData);
                       // Create a link element
                       var a = document.createElement("a");
                       a.href = imageData;
