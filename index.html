@@ -1,82 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Card Download</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:wght@100&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        background-color: rgba(0, 0, 0, 0.515);
-        font-family: "Poppins", sans-serif;
-        font-weight: 400;
-        font-style: normal;
-      }
 
-      #cardsContainer {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        /* width: 70%; */
-        justify-items: center;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Download</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:wght@100&display=swap"
+    rel="stylesheet" />
+  <style>
+    body {
+      background-color: rgba(0, 0, 0, 0.515);
+      font-family: "Poppins", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+    }
 
-      .card {
-        position: relative;
-        width: 414px;
-        height: 732px;
-        margin-bottom: 20px;
-      }
-      .card:hover {
-        cursor: pointer;
-      }
+    #cardsContainer {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      /* width: 70%; */
+      justify-items: center;
+    }
 
-      .logo {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+    .card {
+      position: relative;
+      width: 414px;
+      height: 732px;
+      margin-bottom: 20px;
+    }
 
-      .card-content {
-        position: absolute;
-        z-index: 1011;
-        bottom: 0;
-        left: 0;
-        padding: 10px;
-        width: 100%;
-        box-sizing: border-box;
-        /* height: 92.8%; */
-        height: 92.5%;
-        text-align: center;
-      }
-      .content {
-        margin-top: 24px;
-        height: 142px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-      }
+    .card:hover {
+      cursor: pointer;
+    }
 
-      .card-content h2 {
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        margin: 0px 0px 0px 0px;
-        text-align: center;
-        font-size: 27.1px;
-        line-height: 32.5px;
-        padding: 4px 43px;
-        font-weight: 540;
-        height: 70px;
-        color: #e62a75;
-        z-index: 1000;
-        /* letter-spacing: 0.5px; */
-        /* background: linear-gradient(
+    .logo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-content {
+      position: absolute;
+      z-index: 1011;
+      bottom: 0;
+      left: 0;
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      /* height: 92.8%; */
+      height: 92.5%;
+      text-align: center;
+    }
+
+    .content {
+      margin-top: 24px;
+      height: 142px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .card-content h2 {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      margin: 0px 0px 0px 0px;
+      text-align: center;
+      font-size: 27.1px;
+      line-height: 32.5px;
+      padding: 4px 43px;
+      font-weight: 540;
+      height: 70px;
+      color: #e62a75;
+      z-index: 1000;
+      /* letter-spacing: 0.5px; */
+      /* background: linear-gradient(
           to right,
           #480c7a,
           #e42f76,
@@ -88,323 +90,356 @@
         -moz-background-clip: text;
         -o-background-clip: text;
         -ms-background-clip: text; */
-        /* color: #e62a75; */
+      /* color: #e62a75; */
 
-        color: #c92586;
-        z-index: 1000;
+      color: #c92586;
+      z-index: 1000;
+    }
+
+    .card-content p {
+      text-align: center;
+      font-size: 21.5px;
+      padding: 4px 43px;
+      margin: 0px;
+      color: #5b1a9a;
+      line-height: 24.4px;
+      font-weight: 430;
+    }
+
+    .card-content .address {
+      height: 45px;
+      display: flex;
+      align-items: flex-end;
+      /* letter-spacing: 1px; */
+      justify-content: center;
+      font-size: 18.5px;
+      color: #101413;
+      padding: 4px 0px !important;
+      font-weight: 410;
+    }
+
+    .image {
+      width: 147px;
+      height: 147px;
+      border-radius: 90px;
+    }
+
+    .down-content h3 {
+      font-size: 19px;
+      font-weight: 500;
+      color: #394e9e;
+      margin: 5px 0px -1px 0px;
+      padding: 0px 50px;
+      letter-spacing: -1px;
+    }
+
+    .ul {
+      height: 184px;
+      margin: 2px 0px;
+      padding: 0px 80px;
+    }
+
+    .ul li {
+      list-style: none;
+      font-size: 16px;
+      color: #161616;
+      margin-top: 2px;
+      line-height: 21px;
+      letter-spacing: -1px;
+      font-weight: 430;
+    }
+
+    .phone {
+      color: #fffcfb !important;
+      font-size: 30px !important;
+      font-weight: 440 !important;
+    }
+
+    @media (max-width: 1350px) {
+      #cardsContainer {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 572px) {
+      #cardsContainer {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 10px;
       }
 
-      .card-content p {
-        text-align: center;
-        font-size: 21.5px;
-        padding: 4px 43px;
-        margin: 0px;
-        color: #5b1a9a;
-        line-height: 24.4px;
-        font-weight: 430;
+      .card {
+        max-width: 340px;
+        max-height: 600px;
       }
 
-      .card-content .address {
-        height: 45px;
-        display: flex;
-        align-items: flex-end;
-        /* letter-spacing: 1px; */
-        justify-content: center;
-        font-size: 18.5px;
-        color: #101413;
-        padding: 4px 0px !important;
-        font-weight: 410;
+      .card-content {
+        height: 92.9%;
       }
 
       .image {
-        width: 147px;
-        height: 147px;
-        border-radius: 90px;
+        width: 122px;
+        height: 122px;
+      }
+
+      .card-content h2 {
+        font-size: 27px;
+        line-height: 35px;
+        padding: 0px 30px;
+      }
+
+      .card-content p {
+        font-size: 18px;
+        padding: 2px 32px;
+      }
+
+      .content {
+        margin-top: 2px;
+      }
+
+      .card-content .address {
+        text-align: justify;
+        height: 21px;
+        font-size: 17px;
+        padding: 4px 11px !important;
       }
 
       .down-content h3 {
-        font-size: 19px;
-        font-weight: 500;
-        color: #394e9e;
-        margin: 5px 0px -1px 0px;
-        padding: 0px 50px;
-        letter-spacing: -1px;
-      }
-      .ul {
-        height: 184px;
-        margin: 2px 0px;
-        padding: 0px 80px;
-      }
-      .ul li {
-        list-style: none;
-        font-size: 16px;
-        color: #161616;
+        font-size: 18px;
         margin-top: 2px;
-        line-height: 21px;
-        letter-spacing: -1px;
-        font-weight: 430;
-      }
-      .phone {
-        color: #fffcfb !important;
-        font-size: 30px !important;
-        font-weight: 440 !important;
       }
 
-      @media (max-width: 1350px) {
-        #cardsContainer {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 10px;
-        }
+      .ul {
+        height: 140px;
+        margin: 2px 0px;
+        padding: 0px 40px;
+        /* text-align: justify; */
       }
-      @media (max-width: 572px) {
-        #cardsContainer {
-          display: grid;
-          grid-template-columns: repeat(1, 1fr);
-          gap: 10px;
-        }
-        .card {
-          max-width: 340px;
-          max-height: 600px;
-        }
-        .card-content {
-          height: 92.9%;
-        }
-        .image {
-          width: 122px;
-          height: 122px;
-        }
-        .card-content h2 {
-          font-size: 27px;
-          line-height: 35px;
-          padding: 0px 30px;
-        }
-        .card-content p {
-          font-size: 18px;
-          padding: 2px 32px;
-        }
-        .content {
-          margin-top: 2px;
-        }
-        .card-content .address {
-          text-align: justify;
-          height: 21px;
-          font-size: 17px;
-          padding: 4px 11px !important;
-        }
 
-        .down-content h3 {
-          font-size: 18px;
-          margin-top: 2px;
-        }
-        .ul {
-          height: 140px;
-          margin: 2px 0px;
-          padding: 0px 40px;
-          /* text-align: justify; */
-        }
-        .ul li {
-          font-size: 16.2px;
-          margin-top: 1px;
-        }
+      .ul li {
+        font-size: 16.2px;
+        margin-top: 1px;
       }
-    </style>
-  </head>
+    }
+  </style>
+</head>
 
-  <body>
-    <div id="cardsContainer">
-      <!-- Cards will be dynamically added here -->
-    </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<body>
+  <div id="cardsContainer">
+    <!-- Cards will be dynamically added here -->
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-    <script>
-      $(document).ready(function () {
-        $.ajax({
-          url: "https://api-inter.vaada.app/fetchDetailsForMob",
-          type: "GET",
-          dataType: 'json',
-          crossDomain: true,
-          headers: {
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+  <!DOCTYPE html>
+  < lang="en">
+
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Card Capture</title>
+      <!-- Add jQuery library -->
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <!-- Add html2canvas library -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+      <style>
+        /* Add your CSS styles here */
+      </style>
+    </head>
+
+    <body>
+      <div id="cardsContainer">
+        <!-- Cards will be dynamically generated here -->
+      </div>
+
+      <script>
+        $(document).ready(function () {
+          var imageCache = {};
+
+          $.ajax({
+            url: "https://api-inter.vaada.app/fetchDetailsForMob",
+            type: "GET",
+            dataType: 'json',
+            crossDomain: true,
+            headers: {
               'Access-Control-Allow-Origin': '*'
-            }, 
-          success: function (res) {
-            var cardsHtml = "";
+            },
+            success: function (res) {
+              var cardsHtml = "";
 
-            res.forEach(function (item) {
-              var productsArray = item.customProducts
-                .split(/,|\n•/)
-                .map(function (product) {
-                  return product.trim();
+              res.forEach(function (item) {
+                // Check if the image is already cached
+                if (!imageCache[item.imageUrl]) {
+                  // Create a new Image object and set the source
+                  var img = new Image();
+                  img.src = item.imageUrl;
+                  imageCache[item.imageUrl] = img;
+                  img.onload = function () {
+                    imageCache[item.imageUrl] = img;
+                    $('[data-image-url="' + item.imageUrl + '"]').find('.image').attr('src', img.src);
+                  };
+                }
+
+                var productsArray = item.customProducts
+                  .split(/,|\n•/)
+                  .map(function (product) {
+                    return product.trim();
+                  });
+
+                var productsList;
+                if (productsArray.length <= 5) {
+                  productsList = productsArray
+                    .map(function (product) {
+                      var truncatedProduct =
+                        product.length > 50
+                          ? product.slice(0, 50) + "..."
+                          : product;
+                      return "<li>" + "-" + "&nbsp" + truncatedProduct + "</li>";
+                    })
+                    .join("");
+                } else {
+                  // If there are more than 4 items, truncate the list
+                  var truncatedList = productsArray.slice(0, 4); // Take first 4 items
+                  truncatedList.push("more ...");
+                  productsList = truncatedList
+                    .map(function (product) {
+                      var truncatedProduct =
+                        product.length > 40
+                          ? product.slice(0, 40) + "..."
+                          : product;
+                      return "<li>" + "-" + "&nbsp" + truncatedProduct + "</li>";
+                    })
+                    .join("");
+                }
+
+                var cardHtml = `<div class="card" data-name="${item.name}" data-image-url="${item.imageUrl}">
+                            <img class="logo" src="check.jpg" alt="Card Image">
+                            <div class="card-content">
+                                <img class="image" src="" alt="Card Image"> <!-- Leave src attribute empty initially -->
+                                 <div class="content">
+                                  <h2>${item?.name}</h2>
+                                  <p>${item.productsAndServices}</p>
+                              </div>
+                              <p class="address">
+                                  ${item.neighborhood},&nbsp;${item.city}
+                              </p>
+                              <div class="down-content">
+                                  <h3>Products & Service Offered</h3>
+                                  <ul class='ul'>
+                                      ${productsList}
+                                  </ul>
+                              </div>
+                              <h2 class='phone'>${item.phone}</h2>
+                            </div>
+                        </div>`;
+                cardsHtml += cardHtml;
+              });
+
+              $("#cardsContainer").html(cardsHtml);
+
+              console.log("Cached Images:", imageCache);
+
+              var allCards = $(".card");
+
+              $(".card").click(function () {
+                
+                captureAllCardImages(allCards);
+              });
+
+              function captureAllCardImages(cards) {
+               
+                cards.each(function (index, cardElement) {
+                  var card = $(cardElement);
+                  var name = card.data("name");
+                  captureCardImage(card, name, index + 1, cards.length);
+                  return false;
                 });
-
-              var productsList;
-
-              if (productsArray.length <= 5) {
-                // If there are 4 or fewer items, use the original list
-                productsList = productsArray
-                  .map(function (product) {
-                    // Truncate the product string if it exceeds 50 characters
-                    var truncatedProduct =
-                      product.length > 50
-                        ? product.slice(0, 50) + "..."
-                        : product;
-                    return "<li>" + "-" + "&nbsp" + truncatedProduct + "</li>";
-                  })
-                  .join("");
-              } else {
-                // If there are more than 4 items, truncate the list
-                var truncatedList = productsArray.slice(0, 4); // Take first 4 items
-                truncatedList.push("more ...");
-
-                productsList = truncatedList
-                  .map(function (product) {
-                    // Truncate the product string if it exceeds 50 characters
-                    var truncatedProduct =
-                      product.length > 40
-                        ? product.slice(0, 40) + "..."
-                        : product;
-                    return "<li>" + "-" + "&nbsp" + truncatedProduct + "</li>";
-                  })
-                  .join("");
               }
 
-              var cardHtml = `<div class="card" data-name="${item.name}" data-image-url="${item.imageUrl}">
-                        <img class="logo" src="check.jpg" alt="Card Image">
-                        <div class="card-content">
-                            <img class="image" src="${item.imageUrl}" alt="Card Image">
-                            <div class="content">
-                                <h2>${item?.name}</h2>
-                                <p>${item.productsAndServices}</p>
-                            </div>
-                            <p class="address">
-                                ${item.neighborhood},&nbsp;${item.city}
-                            </p>
-                            <div class="down-content">
-                                <h3>Products & Service Offered</h3>
-                                <ul class='ul'>
-                                    ${productsList}
-                                </ul>
-                            </div>
-                            <h2 class='phone'>${item.phone}</h2>
-                        </div>
-                    </div>`;
-              cardsHtml += cardHtml;
-            });
+              function captureCardImage(card, name, currentIndex, totalCards) {
+                var retryCount = 3; // Number of retries
+                var captureAttempt = 1;
 
-            $("#cardsContainer").html(cardsHtml);
+                function capture() {
+                  // Get the computed styles of the card element
+                  var computedStyle = window.getComputedStyle(card[0]);
 
-            // Initialize an array to store all card elements
-            var allCards = $(".card");
+                  // Create a canvas element with the computed dimensions
+                  var canvas = document.createElement("canvas");
+                  canvas.width = parseFloat(computedStyle.width);
+                  canvas.height = parseFloat(computedStyle.height);
+                  var ctx = canvas.getContext("2d");
 
-            $(".card").click(function () {
-              // Use html2canvas to capture images of all cards
-              captureAllCardImages(allCards);
-            });
+                  html2canvas(card[0], {
+                    canvas: canvas, // Use the created canvas
+                    logging: true, // Disable logging for better performance
+                    backgroundColor: "#ffffff", // Set background color to white
+                    onrendered: function (cardCanvas) {
+                      // Check if the captured image is blank (black)
+                      if (!isBlank(cardCanvas)) {
+                        // Convert card canvas to data URL
+                        var imageData = cardCanvas.toDataURL("image/png");
+                        // Create a link element
+                        var a = document.createElement("a");
+                        a.href = imageData;
+                        a.download = name + "_" + currentIndex + ".png";
 
-            function captureAllCardImages(cards) {
-              // Loop through each card element
-              cards.each(function (index, cardElement) {
-                var card = $(cardElement);
-                var name = card.data("name");
-
-                // Use html2canvas to capture the card as an image
-                captureCardImage(card, name, index + 1, cards.length);
-                return false;
-              });
-            }
-
-            function captureCardImage(card, name, currentIndex, totalCards) {
-              var retryCount = 3; // Number of retries
-              var captureAttempt = 1;
-              
-              function capture() {
-                // Get the computed styles of the card element
-                var computedStyle = window.getComputedStyle(card[0]);
-
-                // Define a scale factor
-                // var scaleFactor = 4; // Increase scale for higher quality
-
-                // Create a canvas element with the computed dimensions
-                var canvas = document.createElement("canvas");
-                canvas.width = parseFloat(computedStyle.width);
-                canvas.height = parseFloat(computedStyle.height);
-                var ctx = canvas.getContext("2d");
-
-                html2canvas(card[0], {
-                  canvas: canvas, // Use the created canvas
-                  scale: 1, // Set scale factor
-                  logging: true, // Disable logging for better performance
-                  // allowTaint: true, // Allow tainting for foreign objects
-                  // foreignObjectRendering: "auto", // Use automatic foreignObject rendering for better SVG support
-                  backgroundColor: "#ffffff", // Set background color to white
-                  onrendered: function (cardCanvas) {
-                    // Check if the captured image is blank (black)
-                    if (!isBlank(cardCanvas)) {
-                      // Convert card canvas to data URL
-                      var imageData = cardCanvas.toDataURL("image/png");
-                      console.log(imageData);
-                      // Create a link element
-                      var a = document.createElement("a");
-                      a.href = imageData;
-                      a.download = name + "_" + currentIndex + ".png";
-
-                      // Append the link to the body and trigger a click event
-                      document.body.appendChild(a);
-                      a.click();
-                      document.body.removeChild(a);
-                    } else {
-                      // Retry if captured image is blank
-                      if (captureAttempt < retryCount) {
-                        captureAttempt++;
-                        console.log(
-                          "Retry capturing card image for " +
+                        // Append the link to the body and trigger a click event
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                      } else {
+                        // Retry if captured image is blank
+                        if (captureAttempt < retryCount) {
+                          captureAttempt++;
+                          console.log(
+                            "Retry capturing card image for " +
                             name +
                             " (Attempt " +
                             captureAttempt +
                             ")"
-                        );
-                        capture();
-                      } else {
-                        console.error(
-                          "Failed to capture card image for " +
+                          );
+                          capture();
+                        } else {
+                          console.error(
+                            "Failed to capture card image for " +
                             name +
                             " after " +
                             retryCount +
                             " attempts."
-                        );
+                          );
+                        }
                       }
                     }
-                  },
-                  useCORS: true, // Ensure that CORS is enabled to prevent security errors
-                });
+                  });
+                }
+
+                capture(); // Initial capture attempt
+
+                // If it's the last card, display a message after all images are downloaded
+                if (currentIndex === totalCards) {
+                  console.log("All images downloaded successfully.");
+                }
               }
+            },
+            error: function (xhr, status, error) {
+              console.error("Error fetching data:", error);
+            },
+          });
 
-              capture(); // Initial capture attempt
-
-              // If it's the last card, display a message after all images are downloaded
-              if (currentIndex === totalCards) {
-                console.log("All images downloaded successfully.");
-              }
-            }
-
-            function isBlank(canvas) {
-              var blankCanvas = document.createElement("canvas");
-              blankCanvas.width = canvas.width;
-              blankCanvas.height = canvas.height;
-
-              var ctx = blankCanvas.getContext("2d");
-              ctx.fillStyle = "#FFFFFF"; // Set color to white
-              ctx.fillRect(0, 0, blankCanvas.width, blankCanvas.height); // Fill with white color
-
-              return canvas.toDataURL() === blankCanvas.toDataURL();
-            }
-          },
-          error: function (xhr, status, error) {
-            console.error("Error fetching data:", error);
-          },
+          function isBlank(canvas) {
+            var blankCanvas = document.createElement("canvas");
+            blankCanvas.width = canvas.width;
+            blankCanvas.height = canvas.height;
+            var ctx = blankCanvas.getContext("2d");
+            ctx.fillStyle = "#FFFFFF"; // Set color to white
+            ctx.fillRect(0, 0, blankCanvas.width, blankCanvas.height); // Fill with white color
+            return canvas.toDataURL() === blankCanvas.toDataURL();
+          }
         });
-      });
-    </script>
-  </body>
+      </script>
+    </body>
+
 </html>
