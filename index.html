@@ -257,6 +257,42 @@
       <script>
         $(document).ready(function () {
           var imageCache = {};
+          function fetchAndCacheImage(imageUrl) {
+            // If the image is already cached, return
+            if (imageCache[imageUrl]) return;
+
+            const options = {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json' // Set content type to JSON
+              },
+              mode: 'cors'
+             
+            };
+            // Fetch the image data
+            fetch(imageUrl, options)
+              .then(response => {
+                console.log(response.arrayBuffer())
+
+                if (!response.ok) {
+                  return response.blob(); // Get the response body as a blob
+                } else {
+                  throw new Error('Network response was not ok');
+                }
+              })
+              .then(blob => {
+                // Convert the blob to a data URL
+                const urlCreator = window.URL || window.webkitURL;
+                const imageUrl = urlCreator.createObjectURL(blob);
+
+                // Cache the data URL
+                imageCache[imageUrl] = imageUrl;
+
+                // Set the cached image as the source of the image element
+                $('[data-image-url="' + imageUrl + '"]').find('.image').attr('src', imageUrl);
+              })
+              .catch(error => console.error('Error fetching image:', error));
+          }
 
           $.ajax({
             url: "https://api-inter.vaada.app/fetchDetailsForMob",
@@ -271,16 +307,7 @@
 
               res.forEach(function (item) {
                 // Check if the image is already cached
-                if (!imageCache[item.imageUrl]) {
-                  // Create a new Image object and set the source
-                  var img = new Image();
-                  img.src = item.imageUrl;
-                  imageCache[item.imageUrl] = img;
-                  img.onload = function () {
-                    imageCache[item.imageUrl] = img;
-                    $('[data-image-url="' + item.imageUrl + '"]').find('.image').attr('src', img.src);
-                  };
-                }
+                fetchAndCacheImage(item.imageUrl);
 
                 var productsArray = item.customProducts
                   .split(/,|\n•/)
@@ -344,12 +371,12 @@
               var allCards = $(".card");
 
               $(".card").click(function () {
-                
+
                 captureAllCardImages(allCards);
               });
 
               function captureAllCardImages(cards) {
-               
+
                 cards.each(function (index, cardElement) {
                   var card = $(cardElement);
                   var name = card.data("name");
@@ -373,6 +400,7 @@
                   var ctx = canvas.getContext("2d");
 
                   html2canvas(card[0], {
+                    useCors: true,
                     canvas: canvas, // Use the created canvas
                     logging: true, // Disable logging for better performance
                     backgroundColor: "#ffffff", // Set background color to white
