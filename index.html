@@ -233,115 +233,110 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-  <!DOCTYPE html>
-  < lang="en">
 
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Card Capture</title>
-      <!-- Add jQuery library -->
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      <!-- Add html2canvas library -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-      <style>
-        /* Add your CSS styles here */
-      </style>
-    </head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Capture</title>
+    <!-- Add jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Add html2canvas library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <style>
+      /* Add your CSS styles here */
+    </style>
+  </head>
 
-    <body>
-      <div id="cardsContainer">
-        <!-- Cards will be dynamically generated here -->
-      </div>
+  <body>
+    <div id="cardsContainer">
+      <!-- Cards will be dynamically generated here -->
+    </div>
 
-      <script>
-        $(document).ready(function () {
-          var imageCache = {};
-          function fetchAndCacheImage(imageUrl) {
-            // If the image is already cached, return
-            if (imageCache[imageUrl]) return;
-
-            const options = {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json' // Set content type to JSON
-              },
-              mode: 'cors'
-             
-            };
-            // Fetch the image data
-            fetch(imageUrl, options)
-              .then(response => {
-                console.log(response.arrayBuffer())
-
-                if (!response.ok) {
-                  return response.blob(); // Get the response body as a blob
-                } else {
-                  throw new Error('Network response was not ok');
-                }
-              })
-              .then(blob => {
-                // Convert the blob to a data URL
-                const urlCreator = window.URL || window.webkitURL;
-                const imageUrl = urlCreator.createObjectURL(blob);
-
-                // Cache the data URL
-                imageCache[imageUrl] = imageUrl;
-
-                // Set the cached image as the source of the image element
-                $('[data-image-url="' + imageUrl + '"]').find('.image').attr('src', imageUrl);
-              })
-              .catch(error => console.error('Error fetching image:', error));
-          }
-
-          $.ajax({
-            url: "https://api-inter.vaada.app/fetchDetailsForMob",
-            type: "GET",
-            dataType: 'json',
-            crossDomain: true,
+    <script>
+      $(document).ready(function () {
+        var imageCache = {};
+        function fetchAndCacheImage(imageUrl) {
+          if (imageCache[imageUrl]) return;
+          const options = {
+            method: 'GET',
             headers: {
-              'Access-Control-Allow-Origin': '*'
+              'Content-Type': 'image/jpeg' 
             },
-            success: function (res) {
-              var cardsHtml = "";
+            mode: 'no-cors'
+          };
+          // Fetch the image data
+          fetch(imageUrl, { dataType: "arrayBuffer" })
+            .then(response => {
+              console.log(response.arrayBuffer())
 
-              res.forEach(function (item) {
-                // Check if the image is already cached
-                fetchAndCacheImage(item.imageUrl);
+              if (!response.ok) {
+                return response.blob(); // Get the response body as a blob
+              } else {
+                throw new Error('Network response was not ok');
+              }
+            })
+            .then(blob => {
+              // Convert the blob to a data URL
+              const urlCreator = window.URL || window.webkitURL;
+              const imageUrl = urlCreator.createObjectURL(blob);
 
-                var productsArray = item.customProducts
-                  .split(/,|\n•/)
+              // Cache the data URL
+              imageCache[imageUrl] = imageUrl;
+
+              // Set the cached image as the source of the image element
+              $('[data-image-url="' + imageUrl + '"]').find('.image').attr('src', imageUrl);
+            })
+            .catch(error => console.error('Error fetching image:', error));
+        }
+
+        $.ajax({
+          url: "https://api-inter.vaada.app/fetchDetailsForMob",
+          type: "GET",
+          dataType: json,
+          crossDomain: true,
+          headers: {
+            'Access-Control-Allow-Origin': '*'
+          },
+          success: function (res) {
+            var cardsHtml = "";
+
+            res.forEach(function (item) {
+
+              fetchAndCacheImage(item.imageUrl);
+
+              var productsArray = item.customProducts
+                .split(/,|\n•/)
+                .map(function (product) {
+                  return product.trim();
+                });
+
+              var productsList;
+              if (productsArray.length <= 5) {
+                productsList = productsArray
                   .map(function (product) {
-                    return product.trim();
-                  });
+                    var truncatedProduct =
+                      product.length > 50
+                        ? product.slice(0, 50) + "..."
+                        : product;
+                    return "<li>" + "-" + "&nbsp" + truncatedProduct + "</li>";
+                  })
+                  .join("");
+              } else {
+                // If there are more than 4 items, truncate the list
+                var truncatedList = productsArray.slice(0, 4); // Take first 4 items
+                truncatedList.push("more ...");
+                productsList = truncatedList
+                  .map(function (product) {
+                    var truncatedProduct =
+                      product.length > 40
+                        ? product.slice(0, 40) + "..."
+                        : product;
+                    return "<li>" + "-" + "&nbsp" + truncatedProduct + "</li>";
+                  })
+                  .join("");
+              }
 
-                var productsList;
-                if (productsArray.length <= 5) {
-                  productsList = productsArray
-                    .map(function (product) {
-                      var truncatedProduct =
-                        product.length > 50
-                          ? product.slice(0, 50) + "..."
-                          : product;
-                      return "<li>" + "-" + "&nbsp" + truncatedProduct + "</li>";
-                    })
-                    .join("");
-                } else {
-                  // If there are more than 4 items, truncate the list
-                  var truncatedList = productsArray.slice(0, 4); // Take first 4 items
-                  truncatedList.push("more ...");
-                  productsList = truncatedList
-                    .map(function (product) {
-                      var truncatedProduct =
-                        product.length > 40
-                          ? product.slice(0, 40) + "..."
-                          : product;
-                      return "<li>" + "-" + "&nbsp" + truncatedProduct + "</li>";
-                    })
-                    .join("");
-                }
-
-                var cardHtml = `<div class="card" data-name="${item.name}" data-image-url="${item.imageUrl}">
+              var cardHtml = `<div class="card" data-name="${item.name}" data-image-url="${item.imageUrl}">
                             <img class="logo" src="check.jpg" alt="Card Image">
                             <div class="card-content">
                                 <img class="image" src="" alt="Card Image"> <!-- Leave src attribute empty initially -->
@@ -361,114 +356,109 @@
                               <h2 class='phone'>${item.phone}</h2>
                             </div>
                         </div>`;
-                cardsHtml += cardHtml;
+              cardsHtml += cardHtml;
+            });
+
+            $("#cardsContainer").html(cardsHtml);
+            var allCards = $(".card");
+
+            $(".card").click(function () {
+              captureAllCardImages(allCards);
+            });
+
+            function captureAllCardImages(cards) {
+              cards.each(function (index, cardElement) {
+                var card = $(cardElement);
+                var name = card.data("name");
+                captureCardImage(card, name, index + 1, cards.length);
+                return false;
               });
+            }
 
-              $("#cardsContainer").html(cardsHtml);
+            function captureCardImage(card, name, currentIndex, totalCards) {
+              var retryCount = 3; // Number of retries
+              var captureAttempt = 1;
 
-              console.log("Cached Images:", imageCache);
+              function capture() {
+                // Get the computed styles of the card element
+                var computedStyle = window.getComputedStyle(card[0]);
 
-              var allCards = $(".card");
+                // Create a canvas element with the computed dimensions
+                var canvas = document.createElement("canvas");
+                canvas.width = parseFloat(computedStyle.width);
+                canvas.height = parseFloat(computedStyle.height);
+                var ctx = canvas.getContext("2d");
 
-              $(".card").click(function () {
+                html2canvas(card[0], {
+                  useCors: true,
+                  canvas: canvas, // Use the created canvas
+                  logging: true, // Disable logging for better performance
+                  backgroundColor: "#ffffff", // Set background color to white
+                  onrendered: function (cardCanvas) {
+                    // Check if the captured image is blank (black)
+                    if (!isBlank(cardCanvas)) {
+                      // Convert card canvas to data URL
+                      var imageData = cardCanvas.toDataURL("image/png");
+                      // Create a link element
+                      var a = document.createElement("a");
+                      a.href = imageData;
+                      a.download = name + "_" + currentIndex + ".png";
 
-                captureAllCardImages(allCards);
-              });
-
-              function captureAllCardImages(cards) {
-
-                cards.each(function (index, cardElement) {
-                  var card = $(cardElement);
-                  var name = card.data("name");
-                  captureCardImage(card, name, index + 1, cards.length);
-                  return false;
+                      // Append the link to the body and trigger a click event
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                    } else {
+                      // Retry if captured image is blank
+                      if (captureAttempt < retryCount) {
+                        captureAttempt++;
+                        console.log(
+                          "Retry capturing card image for " +
+                          name +
+                          " (Attempt " +
+                          captureAttempt +
+                          ")"
+                        );
+                        capture();
+                      } else {
+                        console.error(
+                          "Failed to capture card image for " +
+                          name +
+                          " after " +
+                          retryCount +
+                          " attempts."
+                        );
+                      }
+                    }
+                  }
                 });
               }
 
-              function captureCardImage(card, name, currentIndex, totalCards) {
-                var retryCount = 3; // Number of retries
-                var captureAttempt = 1;
+              capture(); // Initial capture attempt
 
-                function capture() {
-                  // Get the computed styles of the card element
-                  var computedStyle = window.getComputedStyle(card[0]);
-
-                  // Create a canvas element with the computed dimensions
-                  var canvas = document.createElement("canvas");
-                  canvas.width = parseFloat(computedStyle.width);
-                  canvas.height = parseFloat(computedStyle.height);
-                  var ctx = canvas.getContext("2d");
-
-                  html2canvas(card[0], {
-                    useCors: true,
-                    canvas: canvas, // Use the created canvas
-                    logging: true, // Disable logging for better performance
-                    backgroundColor: "#ffffff", // Set background color to white
-                    onrendered: function (cardCanvas) {
-                      // Check if the captured image is blank (black)
-                      if (!isBlank(cardCanvas)) {
-                        // Convert card canvas to data URL
-                        var imageData = cardCanvas.toDataURL("image/png");
-                        // Create a link element
-                        var a = document.createElement("a");
-                        a.href = imageData;
-                        a.download = name + "_" + currentIndex + ".png";
-
-                        // Append the link to the body and trigger a click event
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                      } else {
-                        // Retry if captured image is blank
-                        if (captureAttempt < retryCount) {
-                          captureAttempt++;
-                          console.log(
-                            "Retry capturing card image for " +
-                            name +
-                            " (Attempt " +
-                            captureAttempt +
-                            ")"
-                          );
-                          capture();
-                        } else {
-                          console.error(
-                            "Failed to capture card image for " +
-                            name +
-                            " after " +
-                            retryCount +
-                            " attempts."
-                          );
-                        }
-                      }
-                    }
-                  });
-                }
-
-                capture(); // Initial capture attempt
-
-                // If it's the last card, display a message after all images are downloaded
-                if (currentIndex === totalCards) {
-                  console.log("All images downloaded successfully.");
-                }
+              // If it's the last card, display a message after all images are downloaded
+              if (currentIndex === totalCards) {
+                console.log("All images downloaded successfully.");
               }
-            },
-            error: function (xhr, status, error) {
-              console.error("Error fetching data:", error);
-            },
-          });
-
-          function isBlank(canvas) {
-            var blankCanvas = document.createElement("canvas");
-            blankCanvas.width = canvas.width;
-            blankCanvas.height = canvas.height;
-            var ctx = blankCanvas.getContext("2d");
-            ctx.fillStyle = "#FFFFFF"; // Set color to white
-            ctx.fillRect(0, 0, blankCanvas.width, blankCanvas.height); // Fill with white color
-            return canvas.toDataURL() === blankCanvas.toDataURL();
-          }
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+          },
         });
-      </script>
-    </body>
-    <!-- c -->
+
+        function isBlank(canvas) {
+          var blankCanvas = document.createElement("canvas");
+          blankCanvas.width = canvas.width;
+          blankCanvas.height = canvas.height;
+          var ctx = blankCanvas.getContext("2d");
+          ctx.fillStyle = "#FFFFFF"; // Set color to white
+          ctx.fillRect(0, 0, blankCanvas.width, blankCanvas.height); // Fill with white color
+          return canvas.toDataURL() === blankCanvas.toDataURL();
+        }
+      });
+    </script>
+  </body>
+  <!-- c -->
 
 </html>
